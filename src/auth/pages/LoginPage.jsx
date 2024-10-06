@@ -1,12 +1,39 @@
 import { Google } from "@mui/icons-material";
-import { Button, Grid, Link, TextField, Typography } from "@mui/material";
+import { Alert, Button, Grid, Link, TextField, Typography } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
 import { AuthLayout } from "../layout/AuthLayout";
+import { useForm } from "../../hooks";
+import { useDispatch, useSelector } from "react-redux";
+import { startGoogleSigIn, startsLoginWithEmailPassword } from "../../store/auth/thunks";
+import { useMemo } from "react";
 
 export const LoginPage = () => {
+
+    const { status, errorMessage } = useSelector( state => state.auth );
+
+    const dispatch = useDispatch();
+
+    const { email, password, onInputChange } = useForm({
+        email: '',
+        password: ''
+    });
+
+    const isAuthenticated = useMemo(()=> status === 'checking', [ status ]);
+
+    const onSubmit = ( event )=>{
+        event.preventDefault();
+        
+        dispatch( startsLoginWithEmailPassword({email, password}) );
+    }
+
+    const onGoogleSigIn = ()=>{
+        dispatch( startGoogleSigIn() );
+        console.log('onGoogleSigIn');
+    }
+
   return (
     <AuthLayout title='Login'>
-        <form>
+        <form onSubmit={ onSubmit } className='animate__animated animate__fadeIn animate__faster'>
             <Grid 
                 container>
                     <Grid
@@ -17,7 +44,10 @@ export const LoginPage = () => {
                                 label="Correo"
                                 type="email"
                                 placeholder="username@domain.com"
-                                fullWidth />
+                                fullWidth
+                                name="email"
+                                value={ email }
+                                onChange={ onInputChange } />
                     </Grid>
                     <Grid
                         item
@@ -27,14 +57,30 @@ export const LoginPage = () => {
                                 label="Password"
                                 type="password"
                                 placeholder="fldsk'23¿"
-                                fullWidth />
+                                fullWidth 
+                                name="password"
+                                value={ password }
+                                onChange={ onInputChange }/>
+                    </Grid>
+                    <Grid container>
+                    <Grid item xs={12} display={ !!errorMessage ? '': 'none' }>
+                            <Alert severity="error">{ errorMessage }</Alert>
+                        </Grid>
                     </Grid>
                     <Grid container spacing={ 2 } sx={{mb: 1, mt:1}}>
                         <Grid item xs={12} sm={ 6 }>
-                            <Button variant="contained" fullWidth>Login</Button>
+                            <Button
+                                disabled={ isAuthenticated } 
+                                variant="contained" 
+                                fullWidth 
+                                type="submit">Login</Button>
                         </Grid>
                         <Grid item xs={12} sm={ 6 }>
-                            <Button variant="contained" fullWidth>
+                            <Button 
+                            disabled={ isAuthenticated }
+                            variant="contained" 
+                            fullWidth 
+                            onClick={ ()=> onGoogleSigIn() }>
                                 <Google/>
                                 <Typography sx={{ml: 1}}>Google</Typography>
                             </Button>

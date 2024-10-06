@@ -1,6 +1,5 @@
 import { IconButton } from "@mui/material"
 import { JournalLayout } from "../layout/JournalLayout"
-import { NoteView } from "../views/NoteView"
 import { NothingSelectedView } from "../views/NothingSelectedView"
 import { AddOutlined } from "@mui/icons-material"
 
@@ -19,7 +18,7 @@ export const JournalPage = () => {
             right: 50,
             bottom: 50
           }} >
-          <AddOutlined />
+          <AddOutlined sx={{ fontSize: 30 }}/>
         </IconButton>
         {/* <NoteView /> */}
         {/* NothinSelected */}

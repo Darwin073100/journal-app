@@ -1,14 +1,18 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { JournalApp } from './JournalApp.jsx'
-
+import { Provider } from 'react-redux'
+import { store } from './store'
+import { BrowserRouter } from 'react-router-dom'
 import './styles.css'
-import { ThemeProvider } from '@emotion/react'
-import { CssBaseline } from '@mui/material'
-import { purpleTheme } from './theme/purpleTheme.js'
+import 'animate.css';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <JournalApp />
+    <Provider store={ store }>
+      <BrowserRouter>
+        <JournalApp />
+      </BrowserRouter>
+    </Provider>
   </StrictMode>,
 )
