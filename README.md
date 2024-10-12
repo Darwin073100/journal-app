@@ -1,4 +1,6 @@
-# React + Vite
+# React + Vite + Redux + Firebase: < JournalApp >
+
+## Deploy: [Click aquí](https://journalappegq.netlify.app) 
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
